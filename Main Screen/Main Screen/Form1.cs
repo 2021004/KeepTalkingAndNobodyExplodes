@@ -275,12 +275,7 @@ namespace Main_Screen
             Wire5 = "";
             Wire6 = "";
 
-            showAnimatedPictureBox(pictureBox1, false);
-            showAnimatedPictureBox(pictureBox2, false);
-            showAnimatedPictureBox(pictureBox3, false);
-            showAnimatedPictureBox(pictureBox4, false);
-            showAnimatedPictureBox(pictureBox5, false);
-            showAnimatedPictureBox(pictureBox6, false);
+            showAnimatedPictureBox(0);
 
             groupBox4.Enabled = false;
             groupBox5.Enabled = false;
