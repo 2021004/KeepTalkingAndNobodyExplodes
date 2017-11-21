@@ -24,6 +24,8 @@ namespace Main_Screen
         public string Wire5 = "";
         public string Wire6 = "";
 
+        string promptValue = "";
+
         Dictionary<int, PictureBox> Picture = new Dictionary<int, PictureBox>();
 
         Dictionary<string, RadioButton> Wire1Dictionary = new Dictionary<string, RadioButton>();
@@ -151,6 +153,35 @@ namespace Main_Screen
 
         private void Wire()
         {
+            List<string> Wires = new List<string>
+            {
+                Wire1,
+                Wire2,
+                Wire3,
+                Wire4,
+                Wire5,
+                Wire6
+            };
+
+            int Black = 0;
+            int Red = 0;
+            int White = 0;
+            int Blue = 0;
+            int Yellow = 0;
+            foreach (var item in Wires)
+            {
+                if (item == "Black")
+                    Black += 1;
+                else if (item == "Red")
+                    Red += 1;
+                else if (item == "White")
+                    White += 1;
+                else if (item == "Blue")
+                    Blue += 1;
+                else if (item == "Yellow")
+                    Yellow += 1;
+            };
+
             if (Wire3 == "")
             {
                 
@@ -158,7 +189,7 @@ namespace Main_Screen
             else if (Wire4 == "")
             {
                 #region 3 Wires
-                if (Wire1 != "Red" && Wire2 != "Red" && Wire3 != "Red")
+                if (Red == 0)
                 {
                     //2
                     showAnimatedPictureBox(2);
@@ -168,20 +199,10 @@ namespace Main_Screen
                     //3
                     showAnimatedPictureBox(3);
                 }
-                else if (Wire3 == "Blue" && Wire1 == "Blue")
+                else if (Blue > 1)
                 {
-                    //3
-                    showAnimatedPictureBox(3);
-                }
-                else if (Wire3 == "Blue" && Wire2 == "Blue")
-                {
-                    //3
-                    showAnimatedPictureBox(3);
-                }
-                else if (Wire2 == "Blue" && Wire1 == "Blue")
-                {
-                    //2
-                    showAnimatedPictureBox(2);
+                    //Last Blue
+                    showAnimatedPictureBox(Wires.LastIndexOf("Blue") + 1);
                 }
                 else
                 {
@@ -194,51 +215,101 @@ namespace Main_Screen
             {
                 #region  4 Wires
                 // odd
-                if (Wire4 == "Red" && Wire3 == "Red")
+                if (promptValue == "")
                 {
-                    //4
-                    showAnimatedPictureBox(4);
+                    promptValue = Prompt.ShowDialog("Box", "Serial Number:");
                 }
-                else if (Wire4 == "Red" && Wire2 == "Red")
+                char[] sn = promptValue.ToCharArray();
+
+                if (Red > 1 && IsOdd(int.Parse(sn[sn.Length - 1].ToString())))
                 {
-                    //4
-                    showAnimatedPictureBox(4);
+                    //Last Red
+                    showAnimatedPictureBox(Wires.LastIndexOf("Red") + 1);
                 }
-                else if (Wire4 == "Red" && Wire1 == "Red")
-                {
-                    //4
-                    showAnimatedPictureBox(4);
-                }
-                else if (Wire3 == "Red" && Wire2 == "Red")
-                {
-                    //3
-                    showAnimatedPictureBox(3);
-                }
-                else if (Wire3 == "Red" && Wire1 == "Red")
-                {
-                    //3
-                    showAnimatedPictureBox(3);
-                }
-                else if (Wire2 == "Red" && Wire1 == "Red")
-                {
-                    //2
-                    showAnimatedPictureBox(2);
-                }
-                else if (Wire4 == "Yellow" && Wire3 != "Red" && Wire2 != "Red" && Wire1 != "Red")
+                else if (Wire4 == "Yellow" && Red == 0)
                 {
                     //1
                     showAnimatedPictureBox(1);
+                }
+                else if (Blue == 1)
+                {
+                    //1
+                    showAnimatedPictureBox(1);
+                }
+                else if (Yellow > 1)
+                {
+                    //4
+                    showAnimatedPictureBox(4);
+                }
+                else
+                {
+                    //2
+                    showAnimatedPictureBox(2);
                 }
                 #endregion
             }
             else if (Wire6 == "")
             {
                 #region  5 Wires
+                // odd
+                if (promptValue == "")
+                {
+                    promptValue = Prompt.ShowDialog("Box", "Serial Number:");
+                }
+                char[] sn = promptValue.ToCharArray();
+
+                if (Wire5 == "Black" && IsOdd(int.Parse(sn[sn.Length - 1].ToString())))
+                {
+                    //4
+                    showAnimatedPictureBox(4);
+                }
+                else if (Red == 1 && Yellow > 1)
+                {
+                    //1
+                    showAnimatedPictureBox(1);
+                }
+                else if (Black == 0)
+                {
+                    //2
+                    showAnimatedPictureBox(2);
+                }
+                else
+                {
+                    //1
+                    showAnimatedPictureBox(1);
+                }
                 #endregion
             }
             else
             {
                 #region  6 Wires
+                // odd
+                if (promptValue == "")
+                {
+                    promptValue = Prompt.ShowDialog("Box", "Serial Number:");
+                }
+                char[] sn = promptValue.ToCharArray();
+
+                if (Yellow == 0 && IsOdd(int.Parse(sn[sn.Length - 1].ToString())))
+                {
+                    //3
+                    showAnimatedPictureBox(3);
+                }
+                else if (Yellow == 1 && White > 1)
+                {
+                    //4
+                    showAnimatedPictureBox(4);
+                }
+                else if (Red == 0)
+                {
+                    //6
+                    showAnimatedPictureBox(6);
+                }
+                else
+                {
+                    //4
+                    showAnimatedPictureBox(4);
+                }
                 #endregion
             }
         }
@@ -254,6 +325,11 @@ namespace Main_Screen
                 item.Value.Invalidate();
                 item.Value.Visible = true;
             }
+        }
+
+        public static bool IsOdd(int value)
+        {
+            return value % 2 != 0;
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -275,17 +351,66 @@ namespace Main_Screen
             Wire5 = "";
             Wire6 = "";
 
+            promptValue = "";
+
             showAnimatedPictureBox(0);
 
             groupBox4.Enabled = false;
             groupBox5.Enabled = false;
             groupBox6.Enabled = false;
         }
+        private void serialNumberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            promptValue = Prompt.ShowDialog("Box", "Serial Number:");
+            Wire();
+        }
 
         public IEnumerable<Control> GetAll(Control control, Type type)
         {
             var controls = control.Controls.Cast<Control>();
             return controls.SelectMany(ctrls => GetAll(ctrls, type)).Concat(controls).Where(c => c.GetType() == type);
+        }
+
+    }
+
+    public static class Prompt
+    {
+        public static string ShowDialog(string text, string caption)
+        {
+            Form prompt = new Form();
+            prompt.ClientSize = new System.Drawing.Size(211, 53);
+            prompt.Text = caption;
+            prompt.MaximizeBox = false;
+            prompt.MinimizeBox = false;
+            prompt.ShowIcon = false;
+            prompt.ShowInTaskbar = false;
+            prompt.ControlBox = false;
+            Label textLabel = new Label()
+            {
+                Location = new System.Drawing.Point(12, 9),
+                Text = text,
+                TabIndex = 0
+            };
+            TextBox inputBox = new TextBox()
+            {
+                Location = new System.Drawing.Point(12, 25),
+                Size = new System.Drawing.Size(163, 20),
+                TabIndex = 1
+            };
+            char ch = (char)0x460;// u164
+            Button confirmation = new Button()
+            {
+                Text = ch.ToString(),
+                Location = new System.Drawing.Point(181, 25),
+                Size = new System.Drawing.Size(20, 20)
+            };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.AcceptButton = confirmation;
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(inputBox);
+            prompt.Controls.Add(textLabel);
+            prompt.ShowDialog();
+            return (string)inputBox.Text;
         }
     }
 }
